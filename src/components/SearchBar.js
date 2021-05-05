@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 const SearchBar = () => {
-    const [term, setTerm] = useState('');
+    const [term, setTerm] = useState('programming');
     const [results, setResults] = useState([]);
     console.log(results)
 
@@ -23,11 +23,20 @@ const SearchBar = () => {
         setResults(data.query.search)
         };
         
-        const timeoutId = setTimeout(() => {
-            if(term){
-                searchWiki()
+        if(term && !results.length) {
+            searchWiki()
+        } else {
+            const timeoutId = setTimeout(() => {
+                if(term){
+                    searchWiki()
+                }
+            }, 1000)
+    
+            return () => {
+                clearTimeout(timeoutId);
             }
-        }, 500)
+        }
+        
     }, [term])
 
     const renderedResults = results.map(result => {
